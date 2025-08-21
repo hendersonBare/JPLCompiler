@@ -1,0 +1,154 @@
+expr        : <integer> <expr'>
+            | <float> <expr'>
+            | true <expr'>
+            | false <expr'>
+            | <variable> <expr'>
+            | void <expr'>
+            | [ <expr> , ... ] <expr'>
+            | variable> { <expr> , ... } <expr'>
+            | ( <expr> ) <expr'>
+            | <expr> . <variable> <expr'>
+            | <expr> [ <expr> , ... ] <expr'>
+            | <variable> ( <expr> , ... ) <expr'>
+
+expr'       : <empty>
+            | . <variable> <expr'>
+            | [ <expr> , ... ] <expr'>
+            | <expr_mult>
+
+expr_mult   : * <expr>
+            | / <expr>
+            | % <expr>
+            | <expr_add>
+
+expr_add    : + <expr>
+            | - <expr>
+            | <expr_compare>
+
+5 * 3 + 2   <-- how do we know to stop at 3?
+
+
+
+
+
+expr    :   <expr_prefix>
+
+expr_prefix :   if <expr> then <expr> else <expr>
+            |   array [ <variable> : <expr> , ... ] <expr>
+            |   sum [ <variable> : <expr> , ... ] <expr>
+            |   <expr_bool>
+
+expr_bool   :   <expr_compare> && <expr_bool>
+            |   <expr_compare> || <expr_bool>
+            |   <expr_compare>
+
+expr_compare:   <expr_add> < <expr_compare>
+            |   <expr_add> > <expr_compare>
+            |   <expr_add> <= <expr_compare>
+            |   <expr_add> >= <expr_compare>
+            |   <expr_add> == <expr_compare>
+            |   <expr_add> != <expr_compare>
+            |   <expr_add>
+
+expr_add    :   <expr_mult> + <expr_add>
+            |   <expr_mult> - <expr_add>   
+            |   <expr_mult>
+
+expr_mult   :   <expr_unop> * <expr_mult>
+            |   <expr_unop> / <expr_mult>
+            |   <expr_unop> % <expr_mult>
+            |   <expr_unop>
+
+expr_unop   :   ! <expr_unop>
+            |   - <expr_unop>
+            |   <expr_literal>
+
+expr_literal:   <integer> <expr_cont>
+            |   <float> <expr_cont>
+            |   true <expr_cont>
+            |   false <expr_cont>
+            |   <variable> <expr_cont>
+            |   void <expr_cont>
+            |   [ <expr> , ... ] <expr_cont>
+            |   <variable> { <expr> , ... } <expr_cont>
+            |   ( <expr> ) <expr_cont>
+            |   <variable> ( <expr> , ... ) <expr_cont>
+
+expr_cont   :   . <variable> <expr_cont>
+            |   [ <expr> , ... ] <expr_cont>
+            |   (empty)
+
+
+
+
+
+
+expr        :   <expr_prefix>
+            |   <expr_bool>
+
+expr_prefix :   if <expr> then <expr> else <expr>
+            |   array [ <variable> : <expr> , ... ] <expr>
+            |   sum [ <variable> : <expr> , ... ] <expr>
+
+expr_bool   :   <expr_comp> <expr_bool'>
+
+expr_bool'  :   && <expr_comp> <expr_bool>
+            |   || <expr_comp> <expr_bool'>
+            |   && <expr_prefix> <expr_bool'>
+            |   || <expr_prefix> <expr_bool'>
+            |   (empty)
+
+expr_comp   :   <expr_add> <expr_comp'>
+
+expr_comp'  :   < <expr_add> <expr_comp'>
+            |   > <expr_add> <expr_comp'>
+            |   <= <expr_add> <expr_comp'>
+            |   >= <expr_add> <expr_comp'>
+            |   == <expr_add> <expr_comp'>
+            |   != <expr_add> <expr_comp'>
+            |   < <expr_prefix> <expr_comp'>
+            |   > <expr_prefix> <expr_comp'>
+            |   <= <expr_prefix> <expr_comp'>
+            |   >= <expr_prefix> <expr_comp'>
+            |   == <expr_prefix> <expr_comp'>
+            |   != <expr_prefix> <expr_comp'>
+            |   (empty)
+
+expr_add    :   <expr_mult> <expr_add'>
+
+expr_add'   :   + <expr_mult> <expr_add'>
+            |   - <expr_mult> <expr_add'>   
+            |   + <expr_prefix> <expr_add'>
+            |   - <expr_prefix> <expr_add'>  
+            |   (empty)
+
+expr_mult   :   <expr_unop> <expr_mult'>
+
+expr_mult'  :   * <expr_unop> <expr_mult'>
+            |   / <expr_unop> <expr_mult'>
+            |   % <expr_unop> <expr_mult'>
+            |   * <expr_prefix> <expr_mult'>
+            |   / <expr_prefix> <expr_mult'>
+            |   % <expr_prefix> <expr_mult'>
+            |   (empty)
+
+expr_unop   :   ! <expr_unop>
+            |   - <expr_unop>
+            |   ! <expr_prefix>
+            |   - <expr_prefix>
+            |   <expr_literal>
+
+expr_literal:   <integer> <expr_cont>
+            |   <float> <expr_cont>
+            |   true <expr_cont>
+            |   false <expr_cont>
+            |   <variable> <expr_cont>
+            |   void <expr_cont>
+            |   [ <expr> , ... ] <expr_cont>
+            |   <variable> { <expr> , ... } <expr_cont>
+            |   ( <expr> ) <expr_cont>
+            |   <variable> ( <expr> , ... ) <expr_cont>
+
+expr_cont   :   . <variable> <expr_cont>
+            |   [ <expr> , ... ] <expr_cont>
+            |   (empty)
