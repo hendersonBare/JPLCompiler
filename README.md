@@ -7,6 +7,8 @@ using the contents of this repository only, at the commit
 corresponding to the latest possible submission time (including
 all granted extensions).
 
+This was a partner assignment where I partnered with [Draden Jensen](https://github.com/DraedenJensen)
+
 Picking a Language
 ------------------
 
